@@ -1,11 +1,10 @@
 import React from 'react';
-import UserList from './components/UserList';
-import './App.css';
+import UserManagement from './pages/UserManagement';
 
 function App() {
   return (
     <div className="App">
-      <UserList />
+      <UserManagement />
     </div>
   );
 }
