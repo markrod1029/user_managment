@@ -25,10 +25,13 @@ export const deleteUser = (id) => {
   return api.delete(`/api/users/${id}`);
 };
 
-export default {
+const userService = {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
 };
+
+
+export default userService;
