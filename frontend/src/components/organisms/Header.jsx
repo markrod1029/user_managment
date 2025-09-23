@@ -1,11 +1,10 @@
-// src/components/organisms/UserManagementHeader.jsx
 import React from 'react';
 import Button from '../atoms/Button';
 
-const UserManagementHeader = ({ 
+const Header = ({ 
   userCount, 
   onAddUser,
-  title = "User Management System",
+  title = "User Management ",
   subtitle = "Manage your users efficiently and effectively"
 }) => {
   return (
@@ -36,4 +35,4 @@ const UserManagementHeader = ({
   );
 };
 
-export default UserManagementHeader;
+export default Header;

@@ -1,4 +1,3 @@
-// src/components/atoms/Alert.jsx
 import React from 'react';
 
 const Alert = ({ 
@@ -14,17 +13,11 @@ const Alert = ({
     error: 'bg-red-100 border-red-400 text-red-700'
   };
 
-  const icons = {
-    info: 'ℹ️',
-    success: '✅',
-    warning: '⚠️',
-    error: '❌'
-  };
+  
 
   return (
     <div className={`border rounded px-4 py-3 relative ${styles[type]} ${className}`} role="alert">
       <div className="flex items-center">
-        <span className="mr-2">{icons[type]}</span>
         <span className="block sm:inline">{message}</span>
       </div>
       {onClose && (

@@ -1,11 +1,15 @@
+// src/App.js
 import React from 'react';
-import UserManagement from './pages/UserManagement';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRouter from './router';
 
 function App() {
   return (
-    <div className="App">
-      <UserManagement />
-    </div>
+    <Router>
+      <div className="App">
+        <AppRouter />
+      </div>
+    </Router>
   );
 }
 

@@ -1,4 +1,3 @@
-// src/components/molecules/UserForm.jsx
 import React, { useState, useEffect } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
@@ -11,7 +10,9 @@ const UserForm = ({
   errors = {} 
 }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    fname: '',
+    mname: '',
+    lname: '',
     email: '',
     phone: ''
   });
@@ -19,7 +20,9 @@ const UserForm = ({
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.name,
+        fname: user.fname,
+        mname: user.mname,
+        lname: user.lname,
         email: user.email,
         phone: user.phone || ''
       });
@@ -41,13 +44,33 @@ const UserForm = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
-        label="Full Name"
-        name="name"
-        value={formData.name}
+        label="First Name"
+        name="fname"
+        value={formData.fname}
         onChange={handleChange}
-        placeholder="Enter full name"
+        placeholder="Enter first name"
         required
-        error={errors.name}
+        error={errors.fname}
+      />
+
+      <Input
+        label="Middle Name"
+        name="mname"
+        value={formData.mname}
+        onChange={handleChange}
+        placeholder="Optional"
+        error={errors.mname}
+
+      />
+
+      <Input
+        label="Last Name"
+        name="lname"
+        value={formData.lname}
+        onChange={handleChange}
+        placeholder="Enter last name"
+        required
+        error={errors.lname}
       />
 
       <Input

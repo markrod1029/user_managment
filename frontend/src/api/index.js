@@ -1,11 +1,7 @@
 import axios from 'axios';
 
-// Determine the base API URL based on environment
-const API_BASE = process.env.NODE_ENV === 'production' 
-  ? process.env.REACT_APP_API_BASE_URL || process.env.REACT_APP_API_BASE_URL 
-  : 'http://localhost:5000';
+const API_BASE = process.env.REACT_APP_API_URL;
 
-// Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE,
   headers: {
@@ -13,15 +9,9 @@ const api = axios.create({
   },
 });
 
-// Add request interceptor for logging or auth tokens
 api.interceptors.request.use(
   (config) => {
     console.log(`Making ${config.method?.toUpperCase()} request to: ${config.url}`);
-    // You can add auth tokens here if needed
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
     return config;
   },
   (error) => {

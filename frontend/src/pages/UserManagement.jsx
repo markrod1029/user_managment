@@ -1,7 +1,6 @@
-// src/components/pages/UserManagementPage.jsx
 import React, { useState, useEffect } from 'react';
 
-import UserManagementHeader from '../components/organisms/UserManagementHeader';
+import Header from '../components/organisms/Header';
 import UserTable from '../components/organisms/UserTable';
 import Modal from '../components/atoms/Modal';
 import UserForm from '../components/molecules/UserForm';
@@ -91,6 +90,13 @@ const UserManagementPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-7xl mx-auto">
+
+
+        <Header
+          userCount={users.length}
+          onAddUser={handleAddUser}
+        />
+
         {error && (
           <div className="mb-6">
             <Alert type="error" message={error} onClose={clearError} />
@@ -102,12 +108,6 @@ const UserManagementPage = () => {
             <Alert type="success" message={success} onClose={clearSuccess} />
           </div>
         )}
-
-        <UserManagementHeader
-          userCount={users.length}
-          onAddUser={handleAddUser}
-        />
-
         <UserTable
           users={users}
           onEdit={handleEditUser}
