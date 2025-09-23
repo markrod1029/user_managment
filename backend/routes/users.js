@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
+const db = require("../config/productionDb");
 
 function handleError(res, err, message = "Something went wrong") {
   console.error(err);
