@@ -1,4 +1,3 @@
-// migrations/user_table.js
 module.exports = async function runUserTableMigration(connection) {
   await connection.execute(`
     CREATE TABLE IF NOT EXISTS users (
@@ -8,10 +7,9 @@ module.exports = async function runUserTableMigration(connection) {
       lname VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
       phone VARCHAR(50),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP    
-    )
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
   `);
 
-  console.log(' User table migration completed.');
+  console.log('User table migration completed.');
 };
