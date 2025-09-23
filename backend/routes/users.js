@@ -1,42 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/productionDb");
+const db = require("../config/productionDb"); // naka-pool.promise()
 
 function handleError(res, err, message = "Something went wrong") {
   console.error(err);
   res.status(500).json({ error: message });
 }
 
-// Get users
-router.get("/", (req, res) => {
+// Get all users
+router.get("/", async (req, res) => {
   try {
-    db.query("SELECT * FROM users", (err, results) => {
-      if (err) return handleError(res, err, "Failed to fetch users");
-      res.json(results);
-    });
+    const [rows] = await db.query("SELECT * FROM users");
+    res.json(rows);
   } catch (err) {
-    handleError(res, err);
+    handleError(res, err, "Failed to fetch users");
   }
 });
 
-// Put user
-router.get("/:id", (req, res) => {
+// Get single user
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    db.query("SELECT * FROM users WHERE id = ?", [id], (err, results) => {
-      if (err) return handleError(res, err, "Failed to fetch user");
-      if (results.length === 0) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      res.json(results[0]);
-    });
+    const [rows] = await db.query("SELECT * FROM users WHERE id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(rows[0]);
   } catch (err) {
-    handleError(res, err);
+    handleError(res, err, "Failed to fetch user");
   }
 });
 
-// Post user
-router.post("/", (req, res) => {
+// Add new user
+router.post("/", async (req, res) => {
   try {
     const { fname, mname, lname, email, phone } = req.body;
 
@@ -44,62 +41,57 @@ router.post("/", (req, res) => {
       return res.status(400).json({ error: "Required fields are missing" });
     }
 
-    db.query(
+    const [result] = await db.query(
       "INSERT INTO users (fname, mname, lname, email, phone) VALUES (?, ?, ?, ?, ?)",
-      [fname, mname, lname, email, phone],
-      (err, results) => {
-        if (err) return handleError(res, err, "Failed to add user");
-        res.json({
-          id: results.insertId,
-          fname,
-          mname,
-          lname,
-          email,
-          phone,
-          message: "User added successfully",
-        });
-      }
+      [fname, mname, lname, email, phone]
     );
+
+    res.json({
+      id: result.insertId,
+      fname,
+      mname,
+      lname,
+      email,
+      phone,
+      message: "User added successfully",
+    });
   } catch (err) {
-    handleError(res, err);
+    handleError(res, err, "Failed to add user");
   }
 });
 
 // Update user
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { fname, mname, lname, email, phone } = req.body;
 
-    db.query(
+    const [result] = await db.query(
       "UPDATE users SET fname = ?, mname = ?, lname = ?, email = ?, phone = ? WHERE id = ?",
-      [fname, mname, lname, email, phone, id],
-      (err, results) => {
-        if (err) return handleError(res, err, "Failed to update user");
-        if (results.affectedRows === 0) {
-          return res.status(404).json({ error: "User not found" });
-        }
-        res.json({ message: "User updated successfully" });
-      }
+      [fname, mname, lname, email, phone, id]
     );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json({ message: "User updated successfully" });
   } catch (err) {
-    handleError(res, err);
+    handleError(res, err, "Failed to update user");
   }
 });
 
 // Delete user
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    db.query("DELETE FROM users WHERE id = ?", [id], (err, results) => {
-      if (err) return handleError(res, err, "Failed to delete user");
-      if (results.affectedRows === 0) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      res.json({ message: "User deleted successfully" });
-    });
+    const [result] = await db.query("DELETE FROM users WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json({ message: "User deleted successfully" });
   } catch (err) {
-    handleError(res, err);
+    handleError(res, err, "Failed to delete user");
   }
 });
 
